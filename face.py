@@ -1,6 +1,6 @@
 import sys
 import cv2
-import face_recognition
+
 import numpy as np
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtWidgets import QLabel, QVBoxLayout, QWidget, QApplication, QDesktopWidget
@@ -11,9 +11,10 @@ import datetime
 class ShowVideo(QtCore.QObject):
     camera_port = 0
     camera = cv2.VideoCapture(camera_port)
-    face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+    face_cascade = cv2.CascadeClassifier('D:/project/ai/face2/maxai/haarcascade_frontalface_default.xml')
     VideoSignal = QtCore.pyqtSignal(QtGui.QImage)
     Stopped = QtCore.pyqtSignal()
+
 
     def startVideo(self):
         while True:
@@ -26,7 +27,7 @@ class ShowVideo(QtCore.QObject):
             date = datetime.datetime.now()
             cv2.putText(image, str(date), (370, 470), cv2.FONT_ITALIC, 0.5, (255, 255, 255), 1, cv2.LINE_AA)
 
-            cv2.putText(image, "By FALCON TUNISIA", (15, 470), cv2.FONT_ITALIC, 0.5, (255, 255, 255), 1, cv2.LINE_AA)
+            cv2.putText(image, "By MAI", (15, 470), cv2.FONT_ITALIC, 0.5, (255, 255, 255), 1, cv2.LINE_AA)
             for (x, y, w, h) in faces:
                 cv2.rectangle(image, (x, y), (x + w, y + h), (255, 255, 255), 5)
 
@@ -53,7 +54,7 @@ class FaceRecognitionApp(QWidget):
         layout.addWidget(self.label)
         self.setLayout(layout)
 
-        self.faceCascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+        self.faceCascade = cv2.CascadeClassifier('./haarcascade_frontalface_default.xml')
 
         self.thread = QtCore.QThread()
         self.vid = ShowVideo()
@@ -81,7 +82,7 @@ if __name__ == "__main__":
 
     # Set the window size to 800x640
     window.resize(800, 640)
-
+    #print(cv2.__file__ )
     # Center the window on the screen
     window_rect = window.geometry()
     center_point = QDesktopWidget().availableGeometry().center()
@@ -91,3 +92,4 @@ if __name__ == "__main__":
     window.setWindowTitle("Face Recognition App")
     window.show()
     sys.exit(app.exec_())
+5
