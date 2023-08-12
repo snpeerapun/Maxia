@@ -75,7 +75,9 @@ class MainWindow(QMainWindow):
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
         self.create_layout()
-    
+        self.fullscreen = False  # Keep track of fullscreen state
+        self.setWindowState(Qt.WindowFullScreen)  # Start in fullscreen
+
    
   
     def set_background_image(self, image_path):
@@ -160,7 +162,17 @@ class MainWindow(QMainWindow):
 
         # Add the new layout
         self.right_widget.addWidget(layout)
-  
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_Escape:
+            self.toggle_fullscreen()
+
+    def toggle_fullscreen(self):
+        if self.fullscreen:
+            self.showNormal()  # Exit fullscreen
+        else:
+            self.showFullScreen()  # Enter fullscreen
+        self.fullscreen = not self.fullscreen  # Toggle state
+
 if __name__ == "__main__":
     app = QApplication([])
     window = MainWindow()
