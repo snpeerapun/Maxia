@@ -163,7 +163,7 @@ class MainWindow(QMainWindow):
         # Add the new layout
         self.right_widget.addWidget(layout)
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key_Return:
+        if event.key() == Qt.Key_Escape:
             self.toggle_fullscreen()
 
     def toggle_fullscreen(self):

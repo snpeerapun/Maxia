@@ -19,3 +19,4 @@ fi
 # Step 2: Navigate to the repository directory and run Python script
 #cd "$target_dir/yourrepository" || exit
 python3 main.py
+xscreensaver -no-splash
