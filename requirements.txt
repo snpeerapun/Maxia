@@ -1,0 +1,9 @@
+opencv-python
+eyed3
+numpy
+pygame
+spacy
+PyQt5==5.15.4
+speechrecognition
+scikit-learn
+gtts
