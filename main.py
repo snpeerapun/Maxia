@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QVBoxLayout, QHBo
 from PyQt5.QtCore import Qt, pyqtSignal, pyqtSlot, QObject
 from PyQt5.QtGui import QPixmap, QColor, QPalette
  
-from libs.CategoryRecognizer import CategoryRecognizer
+#from libs.CategoryRecognizer import CategoryRecognizer
 from libs.LayoutHelper import LayoutHelper
 from libs.RoundedButton import RoundedButton
 from libs.TextToSpeech import TextToSpeech
@@ -29,8 +29,7 @@ class Worker(QObject):
     @pyqtSlot()
     def do_work(self):
         recognizer = sr.Recognizer()
-        category_recognizer= CategoryRecognizer()
-
+         
         # Get the list of available microphones
         microphone_list = sr.Microphone.list_microphone_names()
 
@@ -44,14 +43,14 @@ class Worker(QObject):
         try:
             with sr.Microphone(device_index=active_microphone_index) as source:
                 recognizer = sr.Recognizer()
-                category_recognizer = CategoryRecognizer()
+                #category_recognizer = CategoryRecognizer()
 
                 while True:
                     try:
                         audio = recognizer.listen(source)
                         recognized_text = recognizer.recognize_google(audio)                        
-                        category =  category_recognizer.get_most_similar_category(recognized_text)
-                        self.recognized.emit(recognized_text,category)
+                        #category =  category_recognizer.get_most_similar_category(recognized_text)
+                        self.recognized.emit(recognized_text,"category")
                     except sr.UnknownValueError:
                         print("Listening for speech...")
                     except Exception as e:
