@@ -11,9 +11,9 @@ class HomePage(QWidget):
         self.setLayout(layout)
         self.capture_button = QPushButton("FullScereen", self)
         self.capture_button.clicked.connect(self.toggle_fullscreen)  # Modified connection
- 
-        layout.addWidget(label)
         layout.addWidget(self.capture_button)
+        layout.addWidget(label)
+        
         self.setLayout(layout)
     def toggle_fullscreen(self):
         if self.fullscreen:
