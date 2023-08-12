@@ -107,7 +107,6 @@ class MainWindow(QMainWindow):
         self.menu_button_4.clicked.connect(lambda: self.change_page(YouTubePage()))
         self.menu_button_5 = RoundedButton("images/icons-setting.png")          
         self.menu_button_5.clicked.connect(lambda: self.change_page(SettingPage()))
-       
         self.menu_button_6 = RoundedButton("images/icons-power-off.png")          
         self.menu_button_6.clicked.connect(lambda: self.close())
        
