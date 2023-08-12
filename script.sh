@@ -16,7 +16,11 @@ else
     git pull
 fi
 
-# Step 2: Navigate to the repository directory and run Python script
-#cd "$target_dir/yourrepository" || exit
+# Set screen resolution to match the Raspberry Pi's display dimensions
+xrandr --output HDMI-1 --mode 1920x1080  # Replace with your actual output and resolution
+
+# Run the Python script
 python3 main.py
-xscreensaver -no-splash
+
+# Reset the screen resolution to the default after the script finishes
+xrandr --output HDMI-1 --auto
