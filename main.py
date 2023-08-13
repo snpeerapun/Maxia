@@ -74,23 +74,7 @@ class MainWindow(QMainWindow):
         self.setGeometry(0, 0, 800, 480)
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
-
-        font_filename = "NotoSansThai-Regular.ttf"
-        font_path = os.path.abspath(os.path.join("fonts", font_filename))
-
-        
-        if os.path.exists(font_path):
-            font_id = QFontDatabase.addApplicationFont(font_path)
-            if font_id != -1:
-                print("Font added successfully.")
-            else:
-                print("Failed to add font.")
-        else:
-            print("Font file not found:", font_path)
-
-        custom_font = QFont("Noto Sans Thai", 25)
-        QApplication.setFont(custom_font)
-
+ 
         self.create_layout()
         self.fullscreen = False  # Keep track of fullscreen state
         self.setWindowState(Qt.WindowFullScreen)  # Start in fullscreen
@@ -156,7 +140,7 @@ class MainWindow(QMainWindow):
       
  
     def update_label(self, text,category):
-        TextToSpeech.speak("yes,sir")
+        TextToSpeech.speak("You said:"+text)
         if category=="music" :
             self.change_page(MusicPlayerPage()) 
         elif  category=="appoinment" :
@@ -169,8 +153,9 @@ class MainWindow(QMainWindow):
 
         #self.text_label.setText("Listening for speech...")    
         self.worker_thread = threading.Thread(target=self.perform_task)
+        self.worker_thread.daemon = True
         self.worker_thread.start()
-
+        
     def perform_task(self):
         worker = Worker()
         worker.recognized.connect(self.update_label)

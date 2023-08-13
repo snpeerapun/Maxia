@@ -13,10 +13,10 @@ class CalendarPage(QWidget):
     def __init__(self):
         super().__init__()
         layout = QVBoxLayout()
-
+        
         # Create a label with text "ตารางงาน"
         label = QLabel("ตารางงาน")
-        label.setStyleSheet("color: white;background:transparent; font-size: 20px;padding-left:10px")
+        label.setStyleSheet("color: white;background:transparent;")
         layout.addWidget(label)
  
          # Create a QHBoxLayout for the calendar and event list

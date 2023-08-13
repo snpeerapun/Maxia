@@ -9,7 +9,7 @@ class LayoutHelper:
         self.central_widget = central_widget
         self.image_path = image_path
         self.set_background_image()
-        self.center_window()
+        #self.center_window()
         self.set_custom_font()
 
     def set_background_image(self):
