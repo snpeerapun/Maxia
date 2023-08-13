@@ -1,10 +1,10 @@
 import speech_recognition as sr
 from io import BytesIO
 from gtts import gTTS
-import pygame.mixer
 import tempfile
 import os
 import time
+import pygame.mixer
 
 class TextToSpeech:
     @staticmethod
@@ -19,14 +19,14 @@ class TextToSpeech:
         with open(temp_filename, "wb") as temp_file:
             temp_file.write(wav_file_object.getvalue())
 
-        sound = pygame.mixer.Sound(temp_filename)
-        sound.play()
+        pygame.mixer.music.load(temp_filename)
+        pygame.mixer.music.play()
 
         # Wait until the speech finishes playing
-        while pygame.mixer.get_busy():
+        while pygame.mixer.music.get_busy():
             time.sleep(0.1)  # Adjust the sleep duration as needed
 
-        sound.stop()
+        pygame.mixer.music.stop()
         pygame.mixer.quit()
 
         os.remove(temp_filename)  # Clean up the temporary file
