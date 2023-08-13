@@ -32,7 +32,15 @@ class LayoutHelper:
         font_filename = "NotoSansThai-Regular.ttf"
         font_path = os.path.abspath(os.path.join("fonts", font_filename))
 
-        QFontDatabase.addApplicationFont(font_path)
-       
+        
+        if os.path.exists(font_path):
+            font_id = QFontDatabase.addApplicationFont(font_path)
+            if font_id != -1:
+                print("Font added successfully.")
+            else:
+                print("Failed to add font.")
+        else:
+            print("Font file not found:", font_path)
+
         custom_font = QFont("Noto Sans Thai", 25)
         QApplication.setFont(custom_font)
