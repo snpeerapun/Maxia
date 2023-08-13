@@ -4,6 +4,10 @@ from gtts import gTTS
 from io import BytesIO
 import pygame
 
+import pygame
+from io import BytesIO
+from gtts import gTTS
+
 class TextToSpeech:
     @classmethod
     def speak(cls, text):
@@ -11,14 +15,19 @@ class TextToSpeech:
         tts = gTTS(text, lang='en')
         tts.write_to_fp(mp3_file_object)
 
-        pygame.init()
         pygame.mixer.init()
+        mp3_file_object.seek(0)  # Rewind the BytesIO object
+
         pygame.mixer.music.load(mp3_file_object)
         pygame.mixer.music.play()
 
         # Wait until the speech finishes playing
         while pygame.mixer.music.get_busy():
-            continue
+            pygame.time.Clock().tick(10)  # Adjust the ticks per second as needed
+
+        pygame.mixer.music.stop()
+        pygame.quit()
+
 
 def main():
     recognizer = sr.Recognizer()
