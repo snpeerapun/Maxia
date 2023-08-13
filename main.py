@@ -37,7 +37,7 @@ class Worker(QObject):
         print("Available microphones:", microphone_list)
 
         # Specify the index of the active microphone you want to use
-        active_microphone_index = 0  # Replace with the desired index of the active microphone
+        active_microphone_index = 1 # Replace with the desired index of the active microphone
 
         # Initialize the microphone within a try-except block
         try:
