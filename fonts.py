@@ -5,7 +5,7 @@ from PyQt5.QtGui import QFontDatabase, QFont
 class FontExampleApp(QApplication):
     def __init__(self, args):
         super().__init__(args)
-
+       
         font_filename = "NotoSansThai-Regular.ttf"
         font_path = os.path.abspath(os.path.join("fonts", font_filename))
 
@@ -19,14 +19,15 @@ class FontExampleApp(QApplication):
             print("Font file not found:", font_path)
 
         self.main_window = QWidget()
+        self.main_window.setGeometry(0, 0, 800, 480)
         self.layout = QVBoxLayout()
         
-        label = QLabel("Hello, สวัสดี")
+        label = QLabel("Hello, วันหยุดราชการ")
         
         # Set the font for the label
-        font = QFont("Noto Sans Thai")
+        font = QFont("Noto Sans Thai",19)
         label.setFont(font)
-
+        
         self.layout.addWidget(label)
         self.main_window.setLayout(self.layout)
         self.main_window.setWindowTitle("Font Example")
