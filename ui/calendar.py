@@ -24,6 +24,7 @@ class CalendarPage(QWidget):
         font_path = os.path.abspath(os.path.join("fonts", font_filename))
         font_id = QFontDatabase.addApplicationFont(font_path)         
         font = QFont("Noto Sans Thai",25)
+        font2 = QFont("Noto Sans Thai",14)
         self.main_window = QWidget()
         self.main_window.setFont(font)
         self.layout = QVBoxLayout()
@@ -54,7 +55,7 @@ class CalendarPage(QWidget):
 
         for i, holiday in enumerate(holidays, start=1):
             item = QListWidgetItem(self.event_list_widget)
-            item.setStyleSheet(" font-size: 14px;")
+            item.setFont(font2)
             #item.setSizeHint(ListItem(holiday).sizeHint())
             self.event_list_widget.setItemWidget(item, ListItem(holiday.date.toString("dd"),holiday.title,holiday.subtitle))
             self.event_list_widget.setFixedWidth(200)
