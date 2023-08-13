@@ -18,7 +18,21 @@ class CalendarPage(QWidget):
         label = QLabel("ตารางงาน")
         label.setStyleSheet("color: white;background:transparent;")
         layout.addWidget(label)
- 
+
+        
+        font_filename = "NotoSansThai-Regular.ttf"
+        font_path = os.path.abspath(os.path.join("fonts", font_filename))
+        font_id = QFontDatabase.addApplicationFont(font_path)         
+        font = QFont("Noto Sans Thai")
+        self.main_window = QWidget()
+        self.main_window.setFont(font)
+        self.layout = QVBoxLayout()
+        
+        label = QLabel("Hello, สวัสดี")
+        
+        # Set the font for the label
+        font = QFont("Noto Sans Thai")
+
          # Create a QHBoxLayout for the calendar and event list
         calendar_event_layout = QHBoxLayout()
 
@@ -37,6 +51,7 @@ class CalendarPage(QWidget):
        
 
         self.event_list_widget = QListWidget()
+      
         for i, holiday in enumerate(holidays, start=1):
             item = QListWidgetItem(self.event_list_widget)
             #item.setSizeHint(ListItem(holiday).sizeHint())
