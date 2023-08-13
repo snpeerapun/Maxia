@@ -116,9 +116,10 @@ class MainWindow(QMainWindow):
         self.sidebar_layout.addWidget(self.menu_button_2)
         self.sidebar_layout.addWidget(self.menu_button_3)
         self.sidebar_layout.addWidget(self.menu_button_4)
-        self.sidebar_layout.addWidget(self.menu_button_5)
         self.sidebar_layout.addWidget(self.menu_button_6)
        
+        self.sidebar_layout.addWidget(self.menu_button_5)
+      
 
         # Right section - pages
         self.right_widget = QVBoxLayout()
