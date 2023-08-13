@@ -1,17 +1,29 @@
-import pyaudio
+import speech_recognition as sr
 
-def list_microphones():
-    p = pyaudio.PyAudio()
-    info = p.get_host_api_info_by_index(0)
-    num_devices = info.get('deviceCount')
-    
-    print("Available microphones:")
-    for i in range(num_devices):
-        device_info = p.get_device_info_by_host_api_device_index(0, i)
-        device_name = device_info['name']
-        print(f"Microphone {i}: {device_name}")
+# Initialize the recognizer
+recognizer = sr.Recognizer()
 
-    p.terminate()
+# List available microphones
+available_microphones = sr.Microphone.list_microphone_names()
 
-if __name__ == "__main__":
-    list_microphones()
+print("Available Microphones:")
+for idx, mic in enumerate(available_microphones):
+    print(f"{idx + 1}. {mic}")
+
+# Select a microphone (you can change the index)
+selected_microphone_index = int(input("Select a microphone (enter index): ")) - 1
+
+# Capture audio from the selected microphone
+with sr.Microphone(device_index=selected_microphone_index) as source:
+    print(f"Using microphone: {available_microphones[selected_microphone_index]}")
+    print("Say something...")
+    audio = recognizer.listen(source)
+
+# Recognize speech using Google Web Speech API
+try:
+    recognized_text = recognizer.recognize_google(audio)
+    print(f"You said: {recognized_text}")
+except sr.UnknownValueError:
+    print("Sorry, could not understand audio.")
+except sr.RequestError as e:
+    print(f"Error connecting to the Google Web Speech API: {e}")
