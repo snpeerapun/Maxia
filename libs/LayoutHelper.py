@@ -29,9 +29,10 @@ class LayoutHelper:
     def set_custom_font(self):
         # Set the custom font for the application with size 25
         # Load the custom font from the 'fonts' folder
-        font_path = os.path.join("fonts", "NotoSansThai-Regular.ttf")
-        font_id = QFontDatabase.addApplicationFont(font_path)
-        font_family = QFontDatabase.applicationFontFamilies(font_id)[0]
+        font_filename = "NotoSansThai-Regular.ttf"
+        font_path = os.path.abspath(os.path.join("fonts", font_filename))
 
-        custom_font = QFont(font_family, 25)
+        QFontDatabase.addApplicationFont(font_path)
+       
+        custom_font = QFont("Noto Sans Thai", 25)
         QApplication.setFont(custom_font)
