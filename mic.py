@@ -1,29 +1,37 @@
-import speech_recognition as sr
+import pyaudio
+import wave
 
-# Initialize the recognizer
-recognizer = sr.Recognizer()
+def record_audio(filename, duration, sample_rate=44100, chunk_size=1024):
+    audio = pyaudio.PyAudio()
 
-# List available microphones
-available_microphones = sr.Microphone.list_microphone_names()
+    stream = audio.open(format=pyaudio.paInt16,
+                        channels=1,
+                        rate=sample_rate,
+                        input=True,
+                        frames_per_buffer=chunk_size)
 
-print("Available Microphones:")
-for idx, mic in enumerate(available_microphones):
-    print(f"{idx + 1}. {mic}")
+    print("Recording...")
 
-# Select a microphone (you can change the index)
-selected_microphone_index = int(input("Select a microphone (enter index): ")) - 1
+    frames = []
+    for _ in range(0, int(sample_rate / chunk_size * duration)):
+        data = stream.read(chunk_size)
+        frames.append(data)
 
-# Capture audio from the selected microphone
-with sr.Microphone(device_index=selected_microphone_index) as source:
-    print(f"Using microphone: {available_microphones[selected_microphone_index]}")
-    print("Say something...")
-    audio = recognizer.listen(source)
+    print("Recording finished.")
 
-# Recognize speech using Google Web Speech API
-try:
-    recognized_text = recognizer.recognize_google(audio)
-    print(f"You said: {recognized_text}")
-except sr.UnknownValueError:
-    print("Sorry, could not understand audio.")
-except sr.RequestError as e:
-    print(f"Error connecting to the Google Web Speech API: {e}")
+    stream.stop_stream()
+    stream.close()
+    audio.terminate()
+
+    wf = wave.open(filename, 'wb')
+    wf.setnchannels(1)
+    wf.setsampwidth(audio.get_sample_size(pyaudio.paInt16))
+    wf.setframerate(sample_rate)
+    wf.writeframes(b''.join(frames))
+    wf.close()
+
+if __name__ == "__main__":
+    output_filename = "recorded_audio.wav"
+    recording_duration = 5  # seconds
+
+    record_audio(output_filename, recording_duration)
