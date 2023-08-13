@@ -1,37 +1,43 @@
-import pyaudio
-import wave
+import time
+import speech_recognition as sr
+from gtts import gTTS
+from io import BytesIO
+import pygame
 
-def record_audio(filename, duration, sample_rate=44100, chunk_size=1024):
-    audio = pyaudio.PyAudio()
+class TextToSpeech:
+    @classmethod
+    def speak(cls, text):
+        mp3_file_object = BytesIO()
+        tts = gTTS(text, lang='en')
+        tts.write_to_fp(mp3_file_object)
 
-    stream = audio.open(format=pyaudio.paInt16,
-                        channels=1,
-                        rate=sample_rate,
-                        input=True,
-                        frames_per_buffer=chunk_size)
+        pygame.init()
+        pygame.mixer.init()
+        pygame.mixer.music.load(mp3_file_object)
+        pygame.mixer.music.play()
 
-    print("Recording...")
+        # Wait until the speech finishes playing
+        while pygame.mixer.music.get_busy():
+            continue
 
-    frames = []
-    for _ in range(0, int(sample_rate / chunk_size * duration)):
-        data = stream.read(chunk_size)
-        frames.append(data)
+def main():
+    recognizer = sr.Recognizer()
+    
+    with sr.Microphone() as source:
+        print("Say something...")
+        audio = recognizer.listen(source)
 
-    print("Recording finished.")
-
-    stream.stop_stream()
-    stream.close()
-    audio.terminate()
-
-    wf = wave.open(filename, 'wb')
-    wf.setnchannels(1)
-    wf.setsampwidth(audio.get_sample_size(pyaudio.paInt16))
-    wf.setframerate(sample_rate)
-    wf.writeframes(b''.join(frames))
-    wf.close()
+    try:
+        recognized_text = recognizer.recognize_google(audio)
+        print(f"You said: {recognized_text}")
+        
+        response_text = f"You said: {recognized_text}"
+        TextToSpeech.speak(response_text)
+        
+    except sr.UnknownValueError:
+        print("Sorry, could not understand audio.")
+    except sr.RequestError as e:
+        print(f"Error connecting to the Google Web Speech API: {e}")
 
 if __name__ == "__main__":
-    output_filename = "recorded_audio.wav"
-    recording_duration = 5  # seconds
-
-    record_audio(output_filename, recording_duration)
+    main()
