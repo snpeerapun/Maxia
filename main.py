@@ -5,7 +5,7 @@ import threading
 import speech_recognition as sr
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QVBoxLayout, QHBoxLayout, QPushButton, QWidget
 from PyQt5.QtCore import Qt, pyqtSignal, pyqtSlot, QObject
-from PyQt5.QtGui import QPixmap, QColor, QPalette
+from PyQt5.QtGui import QPixmap, QColor, QPalette,QFontDatabase,QFont
  
 #from libs.CategoryRecognizer import CategoryRecognizer
 from libs.LayoutHelper import LayoutHelper
@@ -74,6 +74,23 @@ class MainWindow(QMainWindow):
         self.setGeometry(0, 0, 800, 480)
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
+
+        font_filename = "NotoSansThai-Regular.ttf"
+        font_path = os.path.abspath(os.path.join("fonts", font_filename))
+
+        
+        if os.path.exists(font_path):
+            font_id = QFontDatabase.addApplicationFont(font_path)
+            if font_id != -1:
+                print("Font added successfully.")
+            else:
+                print("Failed to add font.")
+        else:
+            print("Font file not found:", font_path)
+
+        custom_font = QFont("Noto Sans Thai", 25)
+        QApplication.setFont(custom_font)
+
         self.create_layout()
         self.fullscreen = False  # Keep track of fullscreen state
         self.setWindowState(Qt.WindowFullScreen)  # Start in fullscreen
