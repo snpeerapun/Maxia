@@ -15,7 +15,7 @@ class TextToSpeech:
 
         pygame.mixer.init()
 
-        temp_filename = os.path.join(tempfile.gettempdir(), "temp_tts.wav")
+        temp_filename = os.path.join(tempfile.gettempdir(), "temp_tts.mp3")
         with open(temp_filename, "wb") as temp_file:
             temp_file.write(wav_file_object.getvalue())
 
@@ -44,14 +44,9 @@ def main():
     display_microphone_list()
 
     try:
-        selected_index = int(input("Select a microphone device index: "))
-        microphone_names = sr.Microphone.list_microphone_names()
+      
         
-        if selected_index < 0 or selected_index >= len(microphone_names):
-            print("Invalid microphone index. Exiting the program.")
-            return
-        
-        with sr.Microphone(device_index=selected_index) as source:
+        with sr.Microphone() as source:
             print("Listening for speech...")
 
             while True:
