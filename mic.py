@@ -1,22 +1,23 @@
+import speech_recognition as sr
+from io import BytesIO
+from gtts import gTTS
+import pygame.mixer
+import tempfile
 import os
 import time
-import speech_recognition as sr
-from gtts import gTTS
-import pygame
-from io import BytesIO
-import tempfile
+
 class TextToSpeech:
     @staticmethod
     def speak(text):
-        mp3_file_object = BytesIO()
+        wav_file_object = BytesIO()
         tts = gTTS(text, lang='en')
-        tts.write_to_fp(mp3_file_object)
-        pygame.mixer.pre_init(44100, 16, 2, 4096) 
+        tts.write_to_fp(wav_file_object)
+
         pygame.mixer.init()
 
-        temp_filename = os.path.join(tempfile.gettempdir(), "temp_tts.mp3")
+        temp_filename = os.path.join(tempfile.gettempdir(), "temp_tts.wav")
         with open(temp_filename, "wb") as temp_file:
-            temp_file.write(mp3_file_object.getvalue())
+            temp_file.write(wav_file_object.getvalue())
 
         sound = pygame.mixer.Sound(temp_filename)
         sound.play()
@@ -30,26 +31,50 @@ class TextToSpeech:
 
         os.remove(temp_filename)  # Clean up the temporary file
 
+# Initialize the recognizer
+recognizer = sr.Recognizer()
+
+def display_microphone_list():
+    print("Available Microphone Devices:")
+    for index, name in enumerate(sr.Microphone.list_microphone_names()):
+        print(f"{index}: {name}")
+    print()
 
 def main():
-    recognizer = sr.Recognizer()
+    display_microphone_list()
 
-    while True:
-        with sr.Microphone() as source:
-            print("Say something...")
-            audio = recognizer.listen(source)
+    try:
+        selected_index = int(input("Select a microphone device index: "))
+        microphone_names = sr.Microphone.list_microphone_names()
+        
+        if selected_index < 0 or selected_index >= len(microphone_names):
+            print("Invalid microphone index. Exiting the program.")
+            return
+        
+        with sr.Microphone(device_index=selected_index) as source:
+            print("Listening for speech...")
 
-        try:
-            recognized_text = recognizer.recognize_google(audio)
-            print(f"You said: {recognized_text}")
+            while True:
+                try:
+                    audio = recognizer.listen(source, timeout=5)  # Capture audio for up to 5 seconds
 
-            response_text = f"You said: {recognized_text}"
-            TextToSpeech.speak(response_text)
+                    if audio is None:
+                        print("No audio captured. Make sure the microphone is working properly.")
+                        continue  # Skip processing if no audio is captured
 
-        except sr.UnknownValueError:
-            print("Sorry, could not understand audio.")
-        except sr.RequestError as e:
-            print(f"Error connecting to the Google Web Speech API: {e}")
+                    recognized_text = recognizer.recognize_google(audio)
+                    TextToSpeech.speak("You said:"+recognized_text)
+                except sr.UnknownValueError:
+                    print("Sorry, I couldn't understand what you said.")
+                except sr.RequestError as e:
+                    print("Sorry, I encountered an error during speech recognition:", str(e))
+
+                print("Listening again...")
+
+    except ValueError:
+        print("Invalid input. Please enter a valid microphone index.")
+    except KeyboardInterrupt:
+        print("Program terminated by user.")
 
 if __name__ == "__main__":
     main()
