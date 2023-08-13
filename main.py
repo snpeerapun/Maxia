@@ -141,11 +141,11 @@ class MainWindow(QMainWindow):
  
     def update_label(self, text,category):
         TextToSpeech.speak("You said:"+text)
-        if category=="music" :
+        if text=="music" :
             self.change_page(MusicPlayerPage()) 
-        elif  category=="appoinment" :
+        elif  text=="appoinment" :
             self.change_page(MusicPlayerPage()) 
-        elif  category=="calendar" :
+        elif  text=="calendar" :
             self.change_page(CalendarPage())   
 
         self.setWindowTitle(text)
