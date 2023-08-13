@@ -34,14 +34,14 @@ class Worker(QObject):
         microphone_list = sr.Microphone.list_microphone_names()
 
         # Display the list of microphone names (for troubleshooting)
-        print("Available microphones:", microphone_list)
+        #print("Available microphones:", microphone_list)
 
         # Specify the index of the active microphone you want to use
-        active_microphone_index = 1 # Replace with the desired index of the active microphone
+        active_microphone_index = 0  # Replace with the desired index of the active microphone
 
         # Initialize the microphone within a try-except block
         try:
-            with sr.Microphone(device_index=active_microphone_index) as source:
+            with sr.Microphone() as source:
                 recognizer = sr.Recognizer()
                 #category_recognizer = CategoryRecognizer()
 
