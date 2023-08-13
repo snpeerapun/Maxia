@@ -41,36 +41,21 @@ def display_microphone_list():
     print()
 
 def main():
-    display_microphone_list()
+    with sr.Microphone() as source:
+        print("Listening for speech...")
+        while True:
+            try:
+                audio = recognizer.listen(source, timeout=5)  # Capture audio for up to 5 seconds
+ 
+                recognized_text = recognizer.recognize_google(audio)
+                print("You said:",recognized_text)
+                TextToSpeech.speak("You said:"+recognized_text)
+            except sr.UnknownValueError:
+                print("Sorry, I couldn't understand what you said.")
+            except sr.RequestError as e:
+                print("Sorry, I encountered an error during speech recognition:", str(e))
 
-    try:
-      
-        
-        with sr.Microphone() as source:
-            print("Listening for speech...")
-
-            while True:
-                try:
-                    audio = recognizer.listen(source, timeout=5)  # Capture audio for up to 5 seconds
-
-                    if audio is None:
-                        print("No audio captured. Make sure the microphone is working properly.")
-                        continue  # Skip processing if no audio is captured
-
-                    recognized_text = recognizer.recognize_google(audio)
-                    print("You said:",recognized_text)
-                    TextToSpeech.speak("You said:"+recognized_text)
-                except sr.UnknownValueError:
-                    print("Sorry, I couldn't understand what you said.")
-                except sr.RequestError as e:
-                    print("Sorry, I encountered an error during speech recognition:", str(e))
-
-                print("Listening again...")
-
-    except ValueError:
-        print("Invalid input. Please enter a valid microphone index.")
-    except KeyboardInterrupt:
-        print("Program terminated by user.")
+            print("Listening again...")
 
 if __name__ == "__main__":
     main()
