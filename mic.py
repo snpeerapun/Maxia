@@ -11,7 +11,7 @@ class TextToSpeech:
         mp3_file_object = BytesIO()
         tts = gTTS(text, lang='en')
         tts.write_to_fp(mp3_file_object)
-
+        pygame.mixer.pre_init(44100, 16, 2, 4096) 
         pygame.mixer.init()
 
         temp_filename = os.path.join(tempfile.gettempdir(), "temp_tts.mp3")
