@@ -16,8 +16,11 @@ else
     git pull
 fi
 
- 
+# Set screen resolution to match the Raspberry Pi's display dimensions
+xrandr --output HDMI-2 --mode 800x640  # Replace with your actual output and resolution
+
 # Run the Python script
 python3 main.py
 
- 
+# Reset the screen resolution to the default after the script finishes
+xrandr --output HDMI-1 --auto
