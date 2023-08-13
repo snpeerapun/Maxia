@@ -105,21 +105,20 @@ class MainWindow(QMainWindow):
         self.menu_button_3.clicked.connect(lambda: self.change_page(MusicPlayerPage()))
         self.menu_button_4 = RoundedButton("images/icons-youtube.png")          
         self.menu_button_4.clicked.connect(lambda: self.change_page(YouTubePage()))
-        self.menu_button_6 = RoundedButton("images/icons-power-off.png")          
-        self.menu_button_6.clicked.connect(lambda: self.close())
+       
         self.menu_button_5 = RoundedButton("images/icons-setting.png")          
         self.menu_button_5.clicked.connect(lambda: self.change_page(SettingPage()))
-       
+        self.menu_button_6 = RoundedButton("images/icons-power-off.png")          
+        self.menu_button_6.clicked.connect(lambda: self.close())
        
 
         self.sidebar_layout.addWidget(self.menu_button_1)
         self.sidebar_layout.addWidget(self.menu_button_2)
         self.sidebar_layout.addWidget(self.menu_button_3)
-        self.sidebar_layout.addWidget(self.menu_button_4)
+        self.sidebar_layout.addWidget(self.menu_button_4)      
+        self.sidebar_layout.addWidget(self.menu_button_5)
         self.sidebar_layout.addWidget(self.menu_button_6)
        
-        self.sidebar_layout.addWidget(self.menu_button_5)
-      
 
         # Right section - pages
         self.right_widget = QVBoxLayout()
