@@ -142,8 +142,9 @@ class MusicPlayerPage(QWidget):
             self.album_cover_label.setPixmap(pixmap.scaled(200, 200, Qt.KeepAspectRatio))
             self.total_music_length_label.setText("00:00")
     def update_slider(self):
+      
         if pygame.mixer.music.get_busy():
-            position = pygame.mixer.music.get_pos() / 1000  # Convert milliseconds to seconds
+            position = self.seek_slider.value() + 1
             self.seek_slider.setValue(position)
           
             # Update the playtime label
