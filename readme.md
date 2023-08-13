@@ -2,3 +2,4 @@ pyinstaller --hiddenimport cv2 main.py -n myApp --onefile --add-data="./haarcasc
 
 
 pip install -r requirements.txt
+chmod +x ./script.sh
