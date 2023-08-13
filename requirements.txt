@@ -7,3 +7,4 @@ PyQt5==5.15.4
 speechrecognition
 scikit-learn
 gtts
+pyaudio

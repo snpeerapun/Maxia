@@ -1,4 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel,QPushButton
+
+from ui.cameralist import CameraListPopup
 class HomePage(QWidget):
     def __init__(self):
         super().__init__()
@@ -9,12 +11,8 @@ class HomePage(QWidget):
         label.setStyleSheet("color: white;")        
         self.setStyleSheet("color:white;background-color: rgba(185, 185, 185, 0.22);border-radius: 10px;") 
         self.setLayout(layout)
-        self.capture_button = QPushButton("FullScereen", self)
-        self.capture_button.clicked.connect(self.toggle_fullscreen)  # Modified connection
-        layout.addWidget(self.capture_button)
-        layout.addWidget(label)
-        
-        self.setLayout(layout)
+ 
+ 
     def toggle_fullscreen(self):
         if self.fullscreen:
             self.showNormal()  # Exit fullscreen
