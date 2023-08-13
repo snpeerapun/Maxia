@@ -54,7 +54,7 @@ class CalendarPage(QWidget):
 
         for i, holiday in enumerate(holidays, start=1):
             item = QListWidgetItem(self.event_list_widget)
-            item.setFont(font)
+            item.setStyleSheet(" font-size: 14px;")
             #item.setSizeHint(ListItem(holiday).sizeHint())
             self.event_list_widget.setItemWidget(item, ListItem(holiday.date.toString("dd"),holiday.title,holiday.subtitle))
             self.event_list_widget.setFixedWidth(200)
