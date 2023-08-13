@@ -1,6 +1,5 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel,QPushButton
-
-from ui.cameralist import CameraListPopup
+ 
 class HomePage(QWidget):
     def __init__(self):
         super().__init__()
