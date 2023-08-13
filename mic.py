@@ -1,8 +1,10 @@
+import os
+import time
 import speech_recognition as sr
 from gtts import gTTS
 import pygame
 from io import BytesIO
-
+import tempfile
 class TextToSpeech:
     @staticmethod
     def speak(text):
@@ -11,17 +13,23 @@ class TextToSpeech:
         tts.write_to_fp(mp3_file_object)
 
         pygame.mixer.init()
-        mp3_file_object.seek(0)  # Rewind the BytesIO object
 
-        pygame.mixer.music.load(mp3_file_object)
-        pygame.mixer.music.play()
+        temp_filename = os.path.join(tempfile.gettempdir(), "temp_tts.mp3")
+        with open(temp_filename, "wb") as temp_file:
+            temp_file.write(mp3_file_object.getvalue())
+
+        sound = pygame.mixer.Sound(temp_filename)
+        sound.play()
 
         # Wait until the speech finishes playing
-        while pygame.mixer.music.get_busy():
-            pygame.time.Clock().tick(10)  # Adjust the ticks per second as needed
+        while pygame.mixer.get_busy():
+            time.sleep(0.1)  # Adjust the sleep duration as needed
 
-        pygame.mixer.music.stop()
-        pygame.quit()
+        sound.stop()
+        pygame.mixer.quit()
+
+        os.remove(temp_filename)  # Clean up the temporary file
+
 
 def main():
     recognizer = sr.Recognizer()

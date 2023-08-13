@@ -7,3 +7,6 @@ chmod +x ./script.sh
 
 sudo apt-get install libsdl2-mixer-2.0-0
 pip install --upgrade pygame
+
+
+Microsoft Corp. LifeCam VX-800
