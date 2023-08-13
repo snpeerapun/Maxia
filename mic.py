@@ -63,6 +63,7 @@ def main():
                         continue  # Skip processing if no audio is captured
 
                     recognized_text = recognizer.recognize_google(audio)
+                    print("You said:",recognized_text)
                     TextToSpeech.speak("You said:"+recognized_text)
                 except sr.UnknownValueError:
                     print("Sorry, I couldn't understand what you said.")
