@@ -8,3 +8,4 @@ speechrecognition
 scikit-learn
 gtts
 pyaudio
+pip install pybluez
