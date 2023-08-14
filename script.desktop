@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Maxia
+Exec=/home/peerapuns/Documents/ai/Maxia/script.sh
+Icon=/home/peerapuns/Documents/ai/Maxia/images/icon-speech.png
+Terminal=false
