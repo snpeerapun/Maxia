@@ -4,6 +4,8 @@ from gtts import gTTS
 from io import BytesIO
 import pygame
 import tempfile
+import pyttsx3
+
 class TextToSpeech:
     @staticmethod
     def speak(text):
@@ -29,6 +31,23 @@ class TextToSpeech:
 
         os.remove(temp_filename)  # Clean up the temporary file
 
+    def speak2(audio):
+        
+        engine = pyttsx3.init()
+        # getter method(gets the current value
+        # of engine property)
+        voices = engine.getProperty('voices')
+        
+        # setter method .[0]=male voice and
+        # [1]=female voice in set Property.
+        engine.setProperty('voice', voices[0].id)
+        
+        # Method for the speaking of the assistant
+        engine.say(audio) 
+        
+        # Blocks while processing all the currently
+        # queued commands
+        engine.runAndWait()
 
 """ class TextToSpeech:
     @classmethod

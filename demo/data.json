@@ -1,0 +1,26 @@
+{
+    "data": [
+        {
+            "text": "An interactive voice assistant that helps you in your day today coding life.",
+            "label": "coding"
+          },
+          {
+            "text": "What's the weather like today?",
+            "label": "weather"
+          },
+          {
+            "text": "Play my favorite song.",
+            "label": "music"
+          },
+          {
+            "text": "Remind me to buy groceries.",
+            "label": "reminder"
+          },
+          {
+            "text": "Tell me a joke.",
+            "label": "fun"
+          }
+     
+    ]
+  }
+  

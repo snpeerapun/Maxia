@@ -3,13 +3,14 @@ import sys
 import sys
 import threading
 import speech_recognition as sr
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QVBoxLayout, QHBoxLayout, QPushButton, QWidget
-from PyQt5.QtCore import Qt, pyqtSignal, pyqtSlot, QObject
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QVBoxLayout, QHBoxLayout, QPushButton, QWidget,QDialog
+from PyQt5.QtCore import Qt, pyqtSignal, pyqtSlot, QObject,QTimer
 from PyQt5.QtGui import QPixmap, QColor, QPalette,QFontDatabase,QFont
  
 #from libs.CategoryRecognizer import CategoryRecognizer
 from libs.LayoutHelper import LayoutHelper
 from libs.RoundedButton import RoundedButton
+from libs.TextRecognizer import TextRecognizer
 from libs.TextToSpeech import TextToSpeech
 from ui.home import HomePage
 from ui.musicplayer import MusicPlayerPage
@@ -19,17 +20,37 @@ from ui.youtube import YouTubePage
 import threading
 import speech_recognition as sr
  
- 
+class PopupDialog(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent, flags=Qt.WindowFlags(Qt.FramelessWindowHint))
+
+        self.layout = QVBoxLayout()
+        self.layout.addWidget(QPushButton("Close Popup", self, clicked=self.close))
+    
+        container = QWidget(self)
+        container.setLayout(self.layout)
+
+        self.setFixedSize(200, 200)
+        #self.setCentralWidget(container)
+
+    def exit_app(self):
+        app = QApplication.instance()
+        app.closeAllWindows()
+
+
 class Worker(QObject):
     recognized = pyqtSignal(str,str)
-
+    text_recognizer = TextRecognizer()
+    text_recognizer.load_model('intent_model.pkl')
     def __init__(self):
         super().__init__()
-
+        # Usage
+       
+ 
     @pyqtSlot()
     def do_work(self):
         recognizer = sr.Recognizer()
-         
+
         # Get the list of available microphones
         #microphone_list = sr.Microphone.list_microphone_names()
 
@@ -48,8 +69,14 @@ class Worker(QObject):
                 while True:
                     try:
                         audio = recognizer.listen(source)
+
                         recognized_text = recognizer.recognize_google(audio)                        
                         #category =  category_recognizer.get_most_similar_category(recognized_text)
+                        recognized = self.text_recognizer.predict_intent(recognized_text)
+                        print('you said:'+recognized_text)
+                        TextToSpeech.speak("You said:"+recognized_text)
+                        print('you mean:'+recognized)
+                        TextToSpeech.speak('you mean:'+recognized)
                         self.recognized.emit(recognized_text,"category")
                     except sr.UnknownValueError:
                         print("Listening for speech...")
@@ -61,11 +88,7 @@ class Worker(QObject):
             print(f"Error initializing microphone: {e}")
         except Exception as e:
             print(f"Unexpected error: {e}")
-            
  
-    def update_label(self, text,category):
-        self.text_label_text = text
-        self.recognized.emit(text,category)
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -137,10 +160,14 @@ class MainWindow(QMainWindow):
         self.change_page(HomePage())
         self.start_task()
         # Apply the QGraphicsBlurEffect to the layout widget for frosted glass effect
-      
- 
-    def update_label(self, text,category):
-        TextToSpeech.speak("You said:"+text)
+
+
+     
+    def handle_recognized(self, text,category):
+        #popup = PopupDialog(self)
+        #popup.exec_()
+    
+       
         if text=="music" :
             self.change_page(MusicPlayerPage()) 
         elif  text=="appoinment" :
@@ -149,6 +176,8 @@ class MainWindow(QMainWindow):
             self.change_page(CalendarPage())   
 
         self.setWindowTitle(text)
+        #QTimer.singleShot(3000, popup.exit_app)
+
     def start_task(self):
 
         #self.text_label.setText("Listening for speech...")    
@@ -158,7 +187,7 @@ class MainWindow(QMainWindow):
         
     def perform_task(self):
         worker = Worker()
-        worker.recognized.connect(self.update_label)
+        worker.recognized.connect(self.handle_recognized)
         worker.do_work()
 
     def change_page(self, layout):
