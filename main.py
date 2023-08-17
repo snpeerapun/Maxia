@@ -41,7 +41,7 @@ class PopupDialog(QDialog):
 class Worker(QObject):
     recognized = pyqtSignal(str,str)
     text_recognizer = TextRecognizer()
-    text_recognizer.load_model('images/intent_model.pkl')
+    text_recognizer.load_model('models/intent_model.pkl')
     def __init__(self):
         super().__init__()
         # Usage
