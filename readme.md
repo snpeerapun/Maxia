@@ -12,9 +12,6 @@ pip install --upgrade pygame
 Microsoft Corp. LifeCam VX-800
 
 
-git config --global user.email "yai2k5@gmail.com"
-git config --global user.name "lumpini"
-
 
 
 ## RESET GIT ##
