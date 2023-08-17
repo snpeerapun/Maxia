@@ -12,8 +12,9 @@ pip install --upgrade pygame
 Microsoft Corp. LifeCam VX-800
 
 
-
-
+ python -m pip install 'spacy~=3.3.3'
+python -m pip install numpy==1.24.
+3
 ## RESET GIT ##
 git reset --hard
 git pull
