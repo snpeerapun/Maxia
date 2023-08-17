@@ -7,7 +7,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 import numpy as np
-
+import pandas as pd
 class TextRecognizer:
     def __init__(self):
         self.vectorizer = CountVectorizer()
@@ -86,35 +86,110 @@ class TextRecognizer:
                         textcoords="offset points",
                         ha='center', va='bottom')
             
-    def predict_intent(self, text, confidence_threshold=0.9):
+    def predict_intent(self, text, confidence_threshold=0.7):
         if not self.vectorizer or not self.classifier:
             print("Model not loaded or trained. Use 'load_model()' or 'train_model()' to load or train a model.")
-            return
-
+            return None, None
+        
         X_test_vec = self.vectorizer.transform([text])
         predicted_proba = self.classifier.predict_proba(X_test_vec)
         max_proba = max(predicted_proba[0])
         predicted_intent = self.classifier.predict(X_test_vec)[0]
-        print('max_proba:'+str(max_proba))
+        
         if max_proba >= confidence_threshold:
-            return predicted_intent
+            return predicted_intent, max_proba
         else:
-            return "UnKnown"
+            return "UnKnown", max_proba
 
 # Usage
+
+IsTrain = False
+
 text_recognizer = TextRecognizer()
 
+if IsTrain :
+    training_data, labels = text_recognizer.load_dataset('dataset')     
+    text_recognizer.train_model(training_data, labels)
+    text_recognizer.test_model()
+    text_recognizer.save_model('intent_model.pkl')
+else :
+    text_recognizer.load_model('intent_model.pkl')    
+    test_data =  [
+ 
+    {"sentence": "Turn up  volume", "intent": "volume"},
+    {"sentence": "Increase volume", "intent": "volume"},
+    {"sentence": "Raise volume", "intent": "volume"},
+    {"sentence": "Make it louder", "intent": "volume"},
+    {"sentence": "Volume up", "intent": "volume"},
+    {"sentence": "Higher volume", "intent": "volume"},
+    {"sentence": "Boost sound", "intent": "volume"},
+    {"sentence": "Maximize volume", "intent": "volume"},
+    {"sentence": "Up sound level", "intent": "volume"},
+    {"sentence": "Loud sound", "intent": "volume"},
+    {"sentence": "Swipe right", "intent": "swipe"},
+    {"sentence": "Swipe to right", "intent": "swipe"},
+    {"sentence": "Move screen right", "intent": "swipe"},
+    {"sentence": "Swipe towards right", "intent": "swipe"},
+    {"sentence": "Slide to right", "intent": "swipe"},
+    {"sentence": "Right swipe", "intent": "swipe"},
+    {"sentence": "Swipe in right direction", "intent": "swipe"},
+    {"sentence": "Swipe to your right", "intent": "swipe"},
+    {"sentence": "Move to right side", "intent": "swipe"},
+    {"sentence": "Swipe rightwards", "intent": "swipe"},
+    {"sentence": "Mute sound", "intent": "mute"},
+    {"sentence": "Turn off audio", "intent": "mute"},
+    {"sentence": "Silence, please", "intent": "mute"},
+    {"sentence": "Please mute device", "intent": "mute"},
+    {"sentence": "Set volume to zero", "intent": "mute"},
+    {"sentence": "Turn sound off", "intent": "mute"},
+    {"sentence": "Can you mute sound?", "intent": "mute"},
+    {"sentence": "Disable audio", "intent": "mute"},
+    {"sentence": "open my calendar", "intent": "calendar"},
+ 
+ ]
+
+    # Initialize variables for counting correct and total predictions
+    correct_predictions = 0
+    total_predictions = len(test_data)
+
+
+    # Initialize lists to store results
+    results = []
+
+    # Iterate through test data
+    for item in test_data:
+        sentence = item['sentence']
+        intent = item['intent']
+        predicted_intent, max_proba = text_recognizer.predict_intent(sentence)
+        result = "pass" if predicted_intent == intent else "fail"
+        
+        # Count correct predictions
+        if result == "pass":
+            correct_predictions += 1
+        
+        results.append([sentence,intent, predicted_intent,  max_proba, result])
+
+    # Calculate accuracy
+    accuracy = correct_predictions / total_predictions
+    # Create a DataFrame to display the results
+    result_df = pd.DataFrame(results, columns=['text',  'intent','predict', 'max_proba', 'result'])
+    # Style the DataFrame to left-align the 'text' column
+    styled_df = result_df.style.set_properties(**{'text-align': 'left'}, subset=['text'])
+
+    # Print the DataFrame
+    print(result_df)
+    # Print summary accuracy
+    print(f"Summary Accuracy: {accuracy:.2%}")
 # Load and train the model
-training_data, labels = text_recognizer.load_dataset('dataset')
-text_recognizer.train_model(training_data, labels)
-text_recognizer.test_model()
-text_recognizer.save_model('intent_model.pkl')
+#training_data, labels = text_recognizer.load_dataset('dataset')
 
 
-# Load the trained model
+
+""" # Load the trained model
 text_recognizer.load_model('intent_model.pkl')
 
 # Sample text for prediction
-sample_text = "Compare distributions using scatter plot"
+sample_text = "What's on my calendar tomorow"
 predicted_intent = text_recognizer.predict_intent(sample_text)
 print(f"Predicted Intent for '{sample_text}': {predicted_intent}")
+ """
