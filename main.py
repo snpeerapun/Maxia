@@ -19,7 +19,7 @@ from ui.setting import SettingPage
 from ui.youtube import YouTubePage
 import threading
 import speech_recognition as sr
- 
+from sys import platform
 class PopupDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent, flags=Qt.WindowFlags(Qt.FramelessWindowHint))
@@ -98,9 +98,18 @@ class MainWindow(QMainWindow):
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
  
+
         self.create_layout()
-        self.fullscreen = False  # Keep track of fullscreen state
-        self.setWindowState(Qt.WindowFullScreen)  # Start in fullscreen
+        if platform == "linux" or platform == "linux2":
+            self.fullscreen = False  # Keep track of fullscreen state
+            self.setWindowState(Qt.WindowFullScreen) 
+        elif platform == "darwin":
+            self.fullscreen = False 
+        elif platform == "win32":
+            self.fullscreen=False
+            
+        
+         # Start in fullscreen
 
    
   

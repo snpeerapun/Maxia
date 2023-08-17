@@ -1,4 +1,4 @@
-opencv-python
+#opencv-python
 eyed3
 numpy
 pygame
@@ -9,3 +9,6 @@ scikit-learn
 gtts
 pyaudio
 picamera
+pickle
+
+
